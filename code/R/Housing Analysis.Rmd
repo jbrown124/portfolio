@@ -1,0 +1,100 @@
+---
+title: "Boston Housing Analysis"
+author: "Jamese Brown"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  fig.width=6, 
+  fig.height=4
+  )
+library(tidyverse)
+library(faraway)
+library(ggplot2)
+library(ggpubr)
+library(MASS)
+```
+
+```{r}
+summary(Boston)
+
+Boston %>% group_by(age == 100) %>% summarise(count = n())
+Boston %>% group_by(age >= 90) %>% summarise(count = n())
+Boston %>% group_by(age <= 10) %>% summarise(count = n())
+Boston %>% group_by(crim <= 5) %>% summarise(count = n())
+cor(Boston$medv,Boston$crim)
+```
+**Introduction**
+
+  This data set contains 14 variables recorded from 506 Boston suburbs. This dataset was initially created to predict housing values in Boston Suburbs, but here it will be used to see what factors are the best predictors of crime. The remaining 13 variables will be analyzed to determine their ability to predict crime rates.
+
+**Data Highlights**
+
+* The highest per capita crime rate in a town is 88.97 while the lowest crime rate per capita is .006. The median crime rate is .25 while the mean is 3.61. 
+  * This difference between the mean and median is indicative of a right skew meaning that while the majority of Boston suburbs have low crime rates, there are a few with very high crime rates. 
+  * 400 of the recorded suburbs had a crime rate per capita of 5% or less. 
+  * There is negative correlation between crime rate and median house value (r = -.39). The crime rate outliers occur in suburbs with lower median house values and that are closer to an employment center.
+
+* Many of the suburbs in Boston are older homes rather than new builds. 
+  * On average about 77% of the owner-occupied units in each suburb were built before 1940. 
+  * 43 of the 506 suburbs had 100% of the owner-occupied units built before 1940, and 107 suburbs had at least 90% of the homes built before 1940. 
+  * Only 14 of the recorded suburbs had 10% or fewer owner-occupied units built before 1940.
+
+* Left skew on the black population in Boston suburbs which might be indicative of segregated neighborhoods as a few suburbs had a much lower proportion of black residents.
+
+* Right skew on property tax rate meaning that higher property taxes were rarer for the suburbs in this dataset. While most of the suburbs had a property tax rate between $187/$10,000 and $450/$10,000, just over 125 neighborhoods had a property tax rate between $650/$10,000 and $711/$10,000.
+
+* There is a positive linear correlation (r=.76) between nitrogen oxide concentration(nox) and the proportion of non-retail businesses in a neighborhood(indus). So, if a variable is correlated with nox, we will likely see a correlation between the variable and indus and vice versa.
+
+**Graphs**
+```{r}
+ggplot(Boston, aes(x = tax)) + geom_histogram(fill = '#99c1b9', col = I('#003049')) + labs(x = 'Property Tax Rates per $10,000', title = 'Property Tax in Boston Suburbs') + theme_bw() + theme(plot.title = element_text(hjust = 0.5))
+```
+```{r}
+ggplot(Boston, aes(x = crim)) + geom_boxplot(outlier.color = '#E5989B', outlier.size = 2) + labs(x = 'Per Capita Crime Rate', title = 'Crime rates in Boston Suburbs') + theme_bw() + theme(plot.title = element_text(hjust = 0.5))
+```
+```{r}
+ggplot(Boston, aes(x = age)) + geom_histogram(fill = '#bbd0ff', col = I('black')) + labs(x = 'Proportion of owned homes built before 1940', title = 'Home age in Boston Suburbs') + theme_bw() + theme_bw() + theme(plot.title = element_text(hjust = 0.5))
+
+```
+
+```{r,fig.width= 15, fig.height=4}
+g1 = ggplot(Boston, aes(x = medv, y = crim)) + geom_point(color = '#9f86c0') + labs(x = 'Median Home Value (in $1000)', y = 'Crime Rate per Capita', title = 'Median Home Values and Crime Rates') + theme_bw() + theme_bw() + theme(plot.title = element_text(hjust = 0.5))
+g2 = ggplot(Boston, aes(x = nox, y = indus)) + geom_point(color = '#62b6cb') + geom_smooth(method = lm) + labs(x = 'Nitrogen Oxides Concentration (parts per 10 mil)', y = 'Proportion of Non-retail Business Acres', title = 'Nox Concentration and Non-retail Business acres') + theme_bw() + theme_bw() + theme(plot.title = element_text(hjust = 0.5))
+g3 = ggplot(Boston, aes(x = dis, y = crim)) + geom_point(color = 'lightgreen')+ labs(x = 'Average Distance from Employment Center', y = 'Crime Rate per Capita', title = 'Distance from Employment Center and Crime Rates') + theme_bw() + theme_bw() + theme(plot.title = element_text(hjust = 0.5))
+ggarrange(g1,g2,g3, ncol = 3)
+```
+
+**Simple Linear Regressions**
+```{r}
+zoned = lm(crim ~ zn, Boston) #p = 5.5e-06
+summary(zoned)
+#repeated for remaining variables
+```
+
+  There is a statistically significant association between the predictor and response(crime) for every feature except chas, the dummy variable providing a binary response to if the tract bounds the Charles river of not.
+
+Supporting Plots
+```{r,fig.width=15, fig.height=5}
+b = ggplot(Boston, aes(y = crim, x = ptratio)) + geom_point() + geom_smooth(method = lm) + labs(x = 'pupil-teacher ratio')+ ggtitle('Pupil-Teacher Ratio and Crime')
+c = ggplot(Boston, aes(y = crim, x = indus)) + geom_point() + geom_smooth(method = lm) + labs(x = 'Proportion of Non-retail Business Acres')+ ggtitle('Non-retail Business Acres and Crime')
+d = ggplot(Boston, aes(y = crim, x = nox)) + geom_point() + geom_smooth(method = lm) + labs(x = 'nox concentration (parts per 10 mil)')+ ggtitle('Nitrous Oxide Concentration and Crime')
+ggarrange(b,c,d, ncol = 3)
+```
+
+**Multiple linear Regression**
+
+```{r,fig.width=4, fig.height=2}
+mult_lin = lm(crim ~ zn + indus + chas + nox + rm + age + dis + rad + tax + ptratio +
+                black + lstat + medv, Boston)
+summary(mult_lin)
+```
+
+   We would reject the null for zn, nox, dis, rad, black, lstat, and medv. In other words, we have evidence that the proportion of residential land, nox concentration, distance to employment centers, accessibility to radial highways, the proportion of black residents, the percentage of 'lower status' individuals, and median home value have significant impacts on crime rates in Boston suburbs.
