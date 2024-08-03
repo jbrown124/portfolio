@@ -17,7 +17,9 @@ May 2024
 ## Projects
 - R
   - Colleges in the US
-  - Housing Data
+  - Boston Housing Data
+      - [pdf](code/R/Boston_Housing_Analysis.pdf)
+      - [Raw R code](code/R/Boston_Housing_Analysis.rmd)
 
 - Python
   - Video Game Sales
