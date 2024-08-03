@@ -19,7 +19,7 @@ May 2024
   - Colleges in the US
   - Boston Housing Data
       - [pdf](code/R/Boston_Housing_Analysis.pdf)
-      - [Raw R code](code/R/Boston_Housing_Analysis.rmd)
+      - [Raw R code](code/R/Boston_Housing_Analysis.Rmd)
 
 - Python
   - Video Game Sales
