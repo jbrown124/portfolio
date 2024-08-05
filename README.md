@@ -10,7 +10,7 @@
   - [2019 NYC AirBnB Data](https://github.com/jbrown124/portfolio/blob/main/code/Python/AirBnB_Analysis.ipynb)
  
 - **SQL**
-  - [Supermarket Purchases Analysis](code/SQL/https://github.com/jbrown124/portfolio/blob/main/code/SQL/supermarket.sql)
+  - [Supermarket Purchases Analysis](https://github.com/jbrown124/portfolio/blob/main/code/SQL/supermarket.sql)
 
 - **Tableau**
   - [U.S. Colleges](https://public.tableau.com/app/profile/jamese.brown/viz/practice2_17220214056670/Dashboard1)
