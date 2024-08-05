@@ -3,14 +3,14 @@
 ## Projects
 - **R**
   - Boston Housing Data
-      - [pdf](code/R/Boston_Housing_Analysis.pdf)
-      - [Raw R code](code/R/Boston_Housing_Analysis.Rmd)
+      - [pdf](https://github.com/jbrown124/portfolio/blob/main/code/R/Boston_Housing_Analysis.pdf)
+      - [Raw R code](https://github.com/jbrown124/portfolio/blob/main/code/R/Boston_Housing_Analysis.Rmd)
 
 - **Python**
-  - [2019 NYC AirBnB Data](code/Python/AirBnB_Analysis.ipynb)
+  - [2019 NYC AirBnB Data](https://github.com/jbrown124/portfolio/blob/main/code/Python/AirBnB_Analysis.ipynb)
  
 - **SQL**
-  - [Supermarket Purchases Analysis](code/SQL/supermarket.sql)
+  - [Supermarket Purchases Analysis](code/SQL/https://github.com/jbrown124/portfolio/blob/main/code/SQL/supermarket.sql)
 
 - **Tableau**
   - [U.S. Colleges](https://public.tableau.com/app/profile/jamese.brown/viz/practice2_17220214056670/Dashboard1)
