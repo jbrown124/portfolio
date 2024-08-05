@@ -1,15 +1,19 @@
 # Data Analyst
 
 ## Projects
-- R
+- **R**
   - Boston Housing Data
       - [pdf](code/R/Boston_Housing_Analysis.pdf)
       - [Raw R code](code/R/Boston_Housing_Analysis.Rmd)
 
-- Python
+- **Python**
   - [2019 NYC AirBnB Data](code/Python/AirBnB_Analysis.ipynb)
+ 
+- **SQL**
+  - [Supermarket Purchases Analysis](code/SQL/supermarket.sql)
 
-- [Tableau](https://public.tableau.com/app/profile/jamese.brown/vizzes)
+- **Tableau**
+  - [U.S. Colleges](https://public.tableau.com/app/profile/jamese.brown/viz/practice2_17220214056670/Dashboard1)
 
 ## Education
 Bachelor's of Science in Statistics - 
