@@ -16,15 +16,11 @@ May 2024
 
 ## Projects
 - R
-  - Colleges in the US
   - Boston Housing Data
       - [pdf](code/R/Boston_Housing_Analysis.pdf)
       - [Raw R code](code/R/Boston_Housing_Analysis.Rmd)
 
 - Python
-  - Video Game Sales
-
-- SQL
-  - Example
+  - [2019 NYC AirBnB Data](code/Python/AirBnB_Analysis.ipynb)
 
 - [Tableau](https://public.tableau.com/app/profile/jamese.brown/vizzes)
