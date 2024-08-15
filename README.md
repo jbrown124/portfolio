@@ -8,7 +8,7 @@
    
   - Heart Attack Prediction (logistic regression, random forest, tree diagram, binary prediction)
       - [pdf](https://github.com/jbrown124/portfolio/blob/main/code/R/Heart%20Attack%20Prediction.pdf) 
-      - [Raw R code](https://github.com/jbrown124/portfolio/blob/main/code/R/Heart%20Attack%20Analysis.Rmd) 
+      - [Raw R code](https://github.com/jbrown124/portfolio/blob/main/code/R/Heart%20Attack%20Analysis.Rmd)  
 
 - **Python**
   - [2019 NYC AirBnB Data](https://github.com/jbrown124/portfolio/blob/main/code/Python/AirBnB_Analysis.ipynb)
