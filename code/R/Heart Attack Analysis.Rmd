@@ -23,7 +23,7 @@ library(pROC)
 
 
 ```{r, include = FALSE, echo = FALSE}
-heart <- read_csv("C:/Users/bluja/Downloads/heart.csv")
+heart <- read_csv("C:/Users/jameseb/Downloads/heart.csv")
 ```
 
 ```{r, echo = FALSE, include=FALSE}
