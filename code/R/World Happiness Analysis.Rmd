@@ -24,7 +24,7 @@ This is an analysis of the world happiness data from 2019. The data was sourced 
 
 
 ```{r, include = FALSE, echo = FALSE}
-happiness <- read_csv("C:/Users/bluja/Downloads/happiness_2019.csv")
+happiness <- read_csv("C:/Users/jameseb/Downloads/happiness_2019.csv")
 ```
 
 ```{r, include = FALSE, echo = FALSE}
