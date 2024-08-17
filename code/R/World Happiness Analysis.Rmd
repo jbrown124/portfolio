@@ -1,0 +1,147 @@
+---
+title: "World Happiness Analysis"
+output: html_document
+
+---
+
+```{r setup, include=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(glmnet)
+library(ggplot2)
+library(ggpubr)
+library(dplyr)
+library(tree)
+library(mgcv)
+library(MASS)
+library(FNN)
+library(randomForest)
+library(pROC)
+```
+
+## Introduction: 
+This is an analysis of the world happiness data from 2019. The data was sourced from Kaggle, and it includes the happiness data of 156 countries/regions. I will focus on predicting a country's overall happiness score using GDP per capita, social support, healthy life expectancy, freedom to make life choices, generosity, and perceptions of corruption as predictors.
+
+
+```{r, include = FALSE, echo = FALSE}
+happiness <- read_csv("C:/Users/bluja/Downloads/happiness_2019.csv")
+```
+
+```{r, include = FALSE, echo = FALSE}
+#View(happiness)
+#checking data types
+str(happiness)
+```
+
+```{r}
+summary(happiness)
+```
+
+```{r}
+ggplot(happiness, aes(x = Score, y = `Social support`)) + geom_point(color = "#003554") + labs(title = "Happiness Score and Social Support") + geom_smooth()
+ggplot(happiness, aes(x = Score, y = `Freedom to make life choices`)) + geom_point(color = "#003554") + geom_smooth() + labs(title = "Freedom to make choices and Happiness Score")
+ggplot(happiness, aes(x = Score, y = `Perceptions of corruption`)) + geom_point(color = "#003554") + geom_smooth() + labs(title = "Perceptions of Corruption and Happiness Score")
+ggplot(happiness, aes(x = Score, y = `GDP per capita`)) + geom_point(color = "#003554") + geom_smooth() + labs(title = "GDP per capita and Happiness Score")
+```
+
+## Numerical Summary
+
+The lowest happiness score is 2.853 in South Sudan while the highest score is 7.769 in Finland. The only country with a Social support score of 0 is the Central African Republic. Greece has a generosity of 0, Swaziland has a health life expectancy of 0, Somalia has a GDP per capita of 0, Afghanistan has a 0 for freedom to make life choices (closely followed by South Sudan with 0.010), and Moldova has a 0 for Perceptions of corruption. These might be data entry errors, but I do not have enough information to exclude these points from the data. 
+
+There doesn't appear to be any concerning skews in the data. There is a positive, exponential relationship between Perception of corruption and the happiness score. This could be a result of better education in countries that are happier and therefore the citizens are more aware of how their government functions. However, there is not education measurement in this data set, so we will not be able to explore this possible trend.
+
+## Building Linear Models to Predict Happiness Scores
+
+**Full Model**
+
+```{r}
+#full model predicting happiness score
+lm_mod <- lm(Score ~ `GDP per capita` + `Social support` + `Healthy life expectancy` + `Freedom to make life choices` + Generosity + `Perceptions of corruption`, happiness)
+summary(lm_mod)
+```
+
+GDP per capita, Social support, Healthy life expectancy, and freedom to make life choices are all significant predictors of a country's overall happiness score. Generosity and perceptions of corruption are not significant predictors in this model, but this does not mean that they are never significant predictors of the happiness score. The EDA shows that there is collinearity between many of the predictors, so it is possible that generosity and perceptions of corruption simply don't provide anymore information than the predictors already in the model. 
+
+**Correlations between predictors**
+
+```{r}
+cor(happiness$Generosity, happiness$`Perceptions of corruption`)
+round(cor(happiness[,-2]),2)
+```
+
+Generosity doesn't have particularly strong correlation with any of the other predictors, but the correlation between perceptions of corruption and freedom to make life choices is .44 which might be why perceptions of corruption is not significant in the model. 
+
+**Is Perceptions of corruptions significant when freedom to make life choices is removed from the model?**
+
+```{r}
+model <- lm(Score ~ `GDP per capita` + `Social support` + `Healthy life expectancy` + Generosity + `Perceptions of corruption`, happiness)
+summary(model)
+```
+
+When freedom to make life choices is removed from the model, perception of corruption is significant when $\alpha = .05$, but Generosity is not significant.
+
+**Confidence Intervals for the full model**
+
+```{r}
+confint(lm_mod)
+```
+
+When we check the confidence intervals for the predictors, we see that 0 is the interval for Generosity and Perceptions of corruption. This means that 95% the coefficents for these variables can equal 0, and these predictors are likely not significant for the model.
+
+**Model without Generosity as a predictor and confidence interval**
+
+```{r}
+#model excluding generosity as a predictor
+lm_mod2 <- lm(Score ~ `GDP per capita` + `Social support` + `Healthy life expectancy` + `Freedom to make life choices` + `Perceptions of corruption`, happiness)
+summary(lm_mod2)
+confint(lm_mod2)
+```
+
+All the predictors are significant when Generosity is removed from the model. The confidence intervals for the predictors also show that 0 is not in the 95% confidence interval for any of the predictors. However, we should run a conclusive test to see if the models with and without Generosity are significantly different from each other. The null hypothesis will be that Generosity = 0 and should therefore not be included in the model and the alternative hypothesis is that Generosity $\neq$ 0 and should be included in the model.
+
+**ANOVA for full model vs model without generosity**
+
+```{r}
+#ANOVA test to see if the model with generosity is significantly different from the model without generosity
+
+anova(lm_mod2, lm_mod)
+```
+
+The p-value from the ANOVA test is .32. Since this is greater than .05, we fail to reject the null meaning that we do not have sufficient evidence to support that Generosity $\neq$ 0, and therefore we should exclude it from the model because the simpler model is always preferred. 
+
+
+The Perceptions of corruption had 0 in the confidence interval for the full model, so we may want to test if it can also be removed from the model. We will run 2 tests, the first test will compare a model without Perceptions of corruption and Generosity to the model without Generosity. The second tests will compare a model without Perceptions of corruption and Generosity to the model with all the predictors.
+
+**More ANOVAs**
+
+```{r}
+lm_mod3 <- lm(Score ~ `GDP per capita` + `Social support` + `Healthy life expectancy` + `Freedom to make life choices`, happiness)
+summary(lm_mod3)
+#model without Perceptions and generosity vs model without generosity
+anova(lm_mod3, lm_mod2)
+```
+
+The p-value from the ANOVA test is .03. Since this is less than .05, we reject the null meaning that we have sufficient evidence to support that Perceptions of corruptions $\neq$ 0, and therefore we should not exclude it from the model.
+
+```{r}
+#model without Perceptions and generosity vs full model
+anova(lm_mod3, lm_mod)
+```
+
+The p-value from the ANOVA test is .06. Since this is not less than .05, we fail to reject the null meaning that we do not have sufficient evidence to support that Perceptions of corruptions $\neq$ 0 and Generosity $\neq$ 0, and therefore we should exclude these predictors from the model.
+
+These tests tell us that it is better to use a model without Perceptions of corruption and Generosity than to use the full model; however, it is best to only exclude Generosity and keep Perceptions of corruption as a predictor. 
+
+**Is a model without generosity always better?**
+
+This is not a situation where any model without Generosity is the best choice. For example, let's exclude Social support and Generosity from the model and compare it to the full model.
+
+```{r}
+#model with Social Support and Generosity compared to the full model
+mod4 <- lm_mod3 <- lm(Score ~ `GDP per capita` + `Healthy life expectancy` + `Freedom to make life choices` + `Perceptions of corruption`, happiness)
+summary(mod4)
+anova(mod4, lm_mod)
+```
+
+We see that the p-value for the anova test is close to 0 which says we should reject the null ($H_0$ = Social support = Generosity = 0) and choose the alternative hypothesis which is the full model in this scenario. 
+
