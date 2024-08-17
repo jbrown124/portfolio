@@ -10,7 +10,7 @@
       - [pdf](https://github.com/jbrown124/portfolio/blob/main/code/R/Heart%20Attack%20Prediction.pdf) 
       - [code](https://github.com/jbrown124/portfolio/blob/main/code/R/Heart%20Attack%20Analysis.Rmd)
    
- - World Happiness Analysis (hypothesis tests, ANOVA, linear regression)
+   - World Happiness Analysis (hypothesis tests, ANOVA, linear regression)
       - [pdf](https://github.com/jbrown124/portfolio/blob/main/code/R/World%20Happiness%20Analysis.pdf)
       - [code](https://github.com/jbrown124/portfolio/blob/main/code/R/World%20Happiness%20Analysis.Rmd)
    
