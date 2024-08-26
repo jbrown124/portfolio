@@ -21,10 +21,6 @@ library(pROC)
 
 ## Introduction:
 
-```{r, include = FALSE, echo = FALSE}
-heart <- read_csv("C:/Users/bluja/Downloads/heart.csv")
-```
-
 ```{r, echo = FALSE, include=FALSE}
 #View(heart)
 #checking data types
