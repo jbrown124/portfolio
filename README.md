@@ -7,7 +7,7 @@
       - [code](https://github.com/jbrown124/portfolio/blob/main/code/R/Boston_Housing_Analysis.Rmd) 
    
   - Heart Attack Prediction (logistic regression, random forest, tree diagram, binary prediction)
-      - [pdf](https://github.com/jbrown124/portfolio/blob/main/code/R/Heart%20Attack%20Prediction.pdf) 
+      - [pdf](https://github.com/jbrown124/portfolio/blob/main/code/R/Heart_Attack_Prediction.pdf) 
       - [code](https://github.com/jbrown124/portfolio/blob/main/code/R/Heart%20Attack%20Analysis.Rmd)
    
    - World Happiness Analysis (hypothesis tests, ANOVA, linear regression)
