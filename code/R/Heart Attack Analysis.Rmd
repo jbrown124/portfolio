@@ -1,0 +1,170 @@
+---
+title: "Heart Attack Prediction"
+output: html_document
+
+---
+
+```{r setup, include=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(glmnet)
+library(ggplot2)
+library(ggpubr)
+library(dplyr)
+library(tree)
+library(mgcv)
+library(MASS)
+library(FNN)
+library(randomForest)
+library(pROC)
+```
+
+## Introduction:
+
+```{r, include = FALSE, echo = FALSE}
+heart <- read_csv("C:/Users/bluja/Downloads/heart.csv")
+```
+
+```{r, echo = FALSE, include=FALSE}
+#View(heart)
+#checking data types
+str(heart)
+```
+
+```{r, echo = FALSE, include=FALSE}
+#checking for missing data
+sum(is.na(heart))
+```
+
+```{r}
+#need to convert some columns into factors
+factor_cols <- c("sex", "cp", "fbs", "restecg", "exng", "slp", "caa", "thall", "output")
+heart[factor_cols] <- lapply(heart[factor_cols], factor)
+```
+
+```{r, echo = FALSE}
+#renaming levels where applicable
+
+#sex
+levels(heart$sex) <- c("Female", "Male")
+
+#chest pain type
+levels(heart$cp) <- c("Typical Agina","Atypical Agina", "Non-Aginal Pain", "Asymptomatic")
+
+#fasting blood sugar > 120 mg/dl
+levels(heart$fbs) <- c("False", "True")
+
+#rest ecg
+levels(heart$restecg) <- c("Normal", "ST-T Wave Abnormality", "left ventricular hypertrophy")
+
+#exercised induced angina
+levels(heart$exng) <- c("No", "Yes")
+
+#slp
+levels(heart$slp) <- c("Unsloping", "Flat", "Downsloping")
+
+#thall
+levels(heart$thall) <- c("Null", "Fixed Defect", "Normal", "Reversable Defect")
+```
+
+
+```{r}
+summary(heart)
+```
+
+## Graphs
+
+```{r, fig.width = 5, fig.height = 4}
+
+ggplot(heart, aes(x = output, fill = sex)) + geom_bar() + labs(x = "Chance of Heart Attack")
+
+ggplot(heart, aes(x = caa, fill = caa)) + geom_bar() + xlab("Number of Major Vessels") + scale_fill_discrete(name = "Number of Major Vessels")
+
+ggplot(heart, aes(x = cp, fill = cp)) + geom_bar() + ggtitle("Chest Pain Type") + xlab("Type") + coord_flip() + scale_fill_discrete(name = "Chest Pain Type")
+
+ggplot(heart, aes(x = age)) + geom_histogram(color = "black", fill = "#003554") + ggtitle("Age Distribution") + xlab("Age")
+
+ggplot(heart, aes(x = thalachh)) + geom_histogram(color = "black", fill = "#003554") + ggtitle("Maximum Heart Rate Distribution") + xlab("Maximum Heart Rate")
+```
+
+## Numerical Summary Analysis:
+
+The numerical summary reveals that men are represented two times more than females. This could mean that this data set will be more accurate at predicting heart attack likelihood for males than females. The youngest participant is 29 while the oldest participant is 77. The mean age is 54.37 which is close to the median age of 55, so the data doesn't appear to be skewed in terms of age representation. The data is slightly left skewed in terms of maximum heart rate and right skewed in terms of oldpeak.
+
+An output of 0 means there's a lower chance of a heart attack and an output of 1 means there's a higher chance of a heart attack.
+
+```{r,results=FALSE}
+#correlations
+cor(heart$age, heart$chol)
+cor(heart$age, heart$trtbps)
+cor(heart$age, heart$oldpeak)
+cor(heart$trtbps, heart$chol)
+```
+
+```{r, fig.width = 12, fig.height = 8}
+a = ggplot(heart, aes( x = age, y = chol)) + geom_point(color = "#003554") + geom_smooth(method = "lm") + theme_bw() + labs(title = "Age and Cholesterol (r = .21)", x = "Age", y = "Cholesterol")
+b = ggplot(heart, aes( x = age, y = trtbps)) + geom_point(color = "#003554") + geom_smooth(method = "lm") + theme_bw() + labs(title = " Age and Resting Blood Pressure (r = .28)", y = "Systolic Blood Pressure (mm/Hg)", x = "Age")
+c = ggplot(heart, aes( x = age, y = oldpeak)) + geom_point(color = "#003554") + geom_smooth(method = "lm") + theme_bw() + labs(title = "Age and Oldpeak (r = .21)", x = "Age")
+d = ggplot(heart, aes( x = trtbps, y = chol)) + geom_point(color = "#003554") + geom_smooth(method = "lm") + theme_bw() + labs(title = "Cholesterol and Resting Blood Pressure (r = .12)", y = "Cholesterol", x = "Systolic Blood Pressure (mm/Hg)")
+
+ggarrange(a,b,c,d, ncol = 2, nrow = 2)
+```
+
+The correlations between the continuous variables are all positive and relatively week. This could mean that there is a stronger non-linear relationship present, but the scatter plots of these interactions seems to support that there is simply a weak relationship between these pairs.
+
+
+```{r}
+#building a logistic model
+log_mod <- glm(output~., heart, family = "binomial")
+summary(log_mod)
+```
+
+7 out of the 12 predictors are categorical, so the logistic regression summary is not enough for us to exclude any of the categorical predictors. Some of the categorical predictors are not significant at when $\alpha = .05$, but this only means that there is not a significant different from their respective reference variable, not that the entire category is non-significant. 
+
+## Random Forest
+
+```{r}
+#splitting the data into train and test set
+set.seed(123)
+heart_0 = which(heart$output == 0)
+heart_1 = which(heart$output == 1)
+train_id = c(sample(heart_0, size = trunc(0.70 * length(heart_0))),
+sample(heart_1, size = trunc(0.70 * length(heart_1))))
+heart_train = heart[train_id, ]
+heart_test = heart[-train_id, ]
+
+nrow(heart_train)
+nrow(heart_test)
+```
+
+
+```{r}
+rf_mod <- randomForest(
+  output~.,
+  data=heart_train,
+  importance=TRUE) 
+
+rf_mod
+varImpPlot(rf_mod)
+
+rf_test_preds <- predict(rf_mod, newdata=heart_test, type = "class")
+roc(response= rf_test_preds, predictor= factor(heart_test$output, 
+ordered = TRUE))
+```
+
+For both measurements, caa is the most important variable for the random forest. caa causes the greatest mean decrease in accuracy and decreases in the Gini score when it is excluded from the model.
+
+
+## Tree Diagrams
+```{r}
+tree.heart=tree(output~., heart)
+summary(tree.heart)
+```
+
+
+```{r, fig.width = 13, fig.height = 8}
+plot(tree.heart) 
+text(tree.heart,pretty=0,cex=0.7)
+```
+
+The tree diagram supports thall being the most influential predictor of heart attack risk because it is the first root node. However, caa and cp are also strong predictors which matches the results from the random forest.
