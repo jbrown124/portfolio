@@ -1,7 +1,7 @@
 # Data Analyst
 
 ## Projects
-- **R**
+- **R** 
   - Boston Housing Data
       - [pdf](https://github.com/jbrown124/portfolio/blob/main/code/R/Boston_Housing_Analysis.pdf)
       - [code](https://github.com/jbrown124/portfolio/blob/main/code/R/Boston_Housing_Analysis.Rmd) 
