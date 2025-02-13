@@ -21,8 +21,6 @@
 - **SQL**
   - [Supermarket Purchases Analysis](https://github.com/jbrown124/portfolio/blob/main/code/SQL/supermarket.sql)
 
-- **Tableau**
-  - [U.S. Colleges](https://public.tableau.com/app/profile/jamese.brown/viz/practice2_17220214056670/Dashboard1)
 
 ## Education
 Bachelor's of Science in Statistics - 
@@ -32,7 +30,7 @@ University of Michigan
 May 2024
 
 ## About
-I am a recent graduate from the University of Michigan with a Bachelor’s in Statistics, and I am eager to begin my career as a Data Analyst.
+I am a graduate from the University of Michigan with a Bachelor’s in Statistics, and I am eager to develop my career as a Data Analyst.
 
 I have a solid foundation in statistical analysis and data interpretation. My coursework in probability, regression analysis, and statistical computing has equipped me with the necessary knowledge to perform robust data analysis. I have experience in programming languages such as R, Python, and SQL, which I have used extensively to manipulate and analyze datasets. I also have experience using Tableau to create interactive dashboards.
 
