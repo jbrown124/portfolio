@@ -21,6 +21,8 @@
 - **SQL**
   - [Supermarket Purchases Analysis](https://github.com/jbrown124/portfolio/blob/main/code/SQL/supermarket.sql)
 
+-**Tableau**
+  -[Public vs Private Colleges in the US](https://public.tableau.com/app/profile/jamese.brown/viz/practice2_17220214056670/Dashboard1)
 
 ## Education
 Bachelor's of Science in Statistics - 
