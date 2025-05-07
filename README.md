@@ -1,7 +1,6 @@
-# Data Analyst
+# Data Analyst ([Website](https://jbrown-portfolio.carrd.co/))
 [LinkedIn](https://www.linkedin.com/in/jamese-brown-a025a0202/) 
 
-[Website](https://jbrown-portfolio.carrd.co/)
 
 ## Projects
 - **R** 
