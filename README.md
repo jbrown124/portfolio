@@ -1,4 +1,7 @@
 # Data Analyst
+[LinkedIn](https://www.linkedin.com/in/jamese-brown-a025a0202/) 
+
+[Website](https://jbrown-portfolio.carrd.co/)
 
 ## Projects
 - **R** 
@@ -31,8 +34,8 @@ University of Michigan
 
 May 2024
 
-## About
-I am a graduate from the University of Michigan with a Bachelor’s in Statistics, and I am eager to develop my career as a Data Analyst.
+## About ([LinkedIn](https://www.linkedin.com/in/jamese-brown-a025a0202/) | [Website](https://jbrown-portfolio.carrd.co/))
+I am a graduate from the University of Michigan with a Bachelor’s in Statistics, and I am eager to develop my career as a Data Analyst/ Data Scientist.
 
 I have a solid foundation in statistical analysis and data interpretation. My coursework in probability, regression analysis, and statistical computing has equipped me with the necessary knowledge to perform robust data analysis. I have experience in programming languages such as R, Python, and SQL, which I have used extensively to manipulate and analyze datasets. I also have experience using Tableau to create interactive dashboards.
 
