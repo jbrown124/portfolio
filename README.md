@@ -21,6 +21,8 @@
   - [2019 NYC AirBnB Data](https://github.com/jbrown124/portfolio/blob/main/code/Python/AirBnB_Analysis.ipynb)
  
 - **SQL**
+  -  [Electric Vehicle Population Analysis](https://github.com/jbrown124/portfolio/blob/main/code/SQL/Washington_EV.sql)
+      - [data source](https://catalog.data.gov/dataset/electric-vehicle-population-data)      
   -  [Supermarket Purchases Analysis](https://github.com/jbrown124/portfolio/blob/main/code/SQL/supermarket.sql)
 
 - **Tableau**
