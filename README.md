@@ -1,4 +1,6 @@
-# Data Analyst ([Website](https://jbrown-portfolio.carrd.co/))
+# Data Analyst
+[My Website](https://jbrown-portfolio.carrd.co/)
+
 [LinkedIn](https://www.linkedin.com/in/jamese-brown-a025a0202/) 
 
 
@@ -17,7 +19,8 @@
       - [code](https://github.com/jbrown124/portfolio/blob/main/code/R/World%20Happiness%20Analysis.Rmd)
    
 
-- **Python**
+- **Python (Matplotlib, Seaborn, Pandas, NumPy)**
+  - [Electric Vehicle Population Analysis](https://github.com/jbrown124/portfolio/blob/main/code/Python/WA_EV_Data.ipynb)
   - [2019 NYC AirBnB Data](https://github.com/jbrown124/portfolio/blob/main/code/Python/AirBnB_Analysis.ipynb)
  
 - **SQL**
